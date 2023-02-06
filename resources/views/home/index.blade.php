@@ -176,8 +176,8 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">Daily Deals 1</h2>
-                        <a href="catagories.html" class="shop-more">
+                        <h2 class="category-title">Winter Collection</h2>
+                        <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
@@ -188,8 +188,8 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">Daily Deals 2</h2>
-                        <a href="catagories.html" class="shop-more">
+                        <h2 class="category-title">Best Deal</h2>
+                        <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
@@ -252,8 +252,8 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">Daily Deals 3</h2>
-                        <a href="catagories.html" class="shop-more">
+                        <h2 class="category-title">New Arrival</h2>
+                        <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
