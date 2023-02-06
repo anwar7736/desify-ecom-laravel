@@ -1,0 +1,82 @@
+
+
+/* Small screen (phone) container 100% */ 
+@media only screen and (max-width: 767px) {
+	
+	.header_area .header_top {
+	    /*padding-left: 15px;
+	    padding-right: 15px;*/
+	}
+
+} /* End Small screen (phone) */
+
+
+/* very small Mobile Layout: 320px. container 540px */
+/* // col-xs to col-sm */
+@media only screen and (min-width: 300px) and (max-width: 575px) {
+
+	
+
+
+} /* End very small Mobile Layout: 320px. */
+
+
+/* Small tablet Screen  container 750px */
+/* // col-sm to col-md */
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+
+	
+
+} /* End Small tablet Screen   */
+
+
+/* Mediam Screen  container 970px */
+/* // col-lg to col-xl */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	
+	.header_area .header_top {
+	    padding-left: 15px;
+	    padding-right: 15px;
+	}
+	
+
+} /* End Mediam Screen   */
+
+
+
+/* Large Screen  container 1170px  extra to match boot*/
+@media (min-width: 1200px) {
+
+	/* .master-column-wrapper > .container{
+		padding-left: 0px;
+		padding-right: 0px;
+	} */
+
+
+} /* End Large Screen   */
+
+
+
+
+/* xLarge screen container 1170px*/
+@media only screen and (min-width: 1200px) and (max-width: 1440px){
+	/* .home_slider_area .home_slider{
+		max-width: 1140px;
+		margin: 0 auto;
+	} */
+
+}
+
+
+
+/* xxLarge screen container 1440px */
+@media only screen and (min-width: 1441px) and (max-width: 1920px){
+	
+}
+
+/*
+xxxLarge screen
+@media (min-width: 1921px){
+	
+} */
+
