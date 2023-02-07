@@ -106,29 +106,8 @@
 <div class="master-column-wrapper">
 <div class="page home-page">
 <div class="page-body">
-    <div class="home_slider_area">
-        <div class="home_slider">
-            <div class="home-page-top-slider">
-                <div>
-                    <div class="container">
-                        <a href="earnmoney.html">
-                            <img src="images/thumbs/0009256.jpg"
-                                data-thumb="https://www.deshify.com/images/thumbs/0009256.jpeg"
-                                data-transition="slideInLeft" alt="" title="" />
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <div class="container">
-                        <a href="earnmoney.html">
-                            <img src="images/thumbs/0015848.jpg"
-                                data-thumb="https://www.deshify.com/images/thumbs/0015848.jpeg"
-                                data-transition="" alt="" title="" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="home_slider_section">
+
     </div>
     <div class="container">
         <div class="row">
@@ -143,27 +122,8 @@
                             </div>
 
                             <div class="category-grid home_page_category_grid clearfix">
-                                <div class="item_grid row">
-                                @for($i = 0; $i < 6; $i++)
-                                    <div class="col-sm-6 col-md-4 item_box item_box_id_53">
-                                    <div class="category_item">
+                                <div class="item_grid row popular_category_section">
 
-                                        <div class="category_item_bottom">
-
-                                        <div class="category_item_bottom_inner">
-                                            <h2 class="title">
-                                                <a href="#" title="Show products in category Covid-19 Protection">
-                                                        Covid-19 Protection
-                                                    <img alt="Picture for category Covid-19 Protection" src="images/thumbs/0007240_covid-19-protection_50.png" title="Show products in category Covid-19 Protection" />
-                                                    </a>
-                                                </h2>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                                @endfor
                                 </div>
                             </div>
                         </div>
@@ -176,13 +136,16 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">Winter Collection</h2>
+                        <h2 class="category-title">New Arrival</h2>
                         <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
-                    <div class="daily_deal1">
-                        @include('component.carousel_slider')
+                        
+                    <div class="slider-wrapper product-grid">
+                        <div class="item-grid special-product-slider new_arrival">
+
+                        </div>
                     </div>
                 </div>
                 <div class="home-page-product">
@@ -193,12 +156,14 @@
                             Shop More
                         </a>
                     </div>
-                    <div class="daily_deal2">
-                        @include('component.carousel_slider')
+                    <div class="slider-wrapper product-grid">
+                        <div class="item-grid special-product-slider2 best_deal">
+
+                        </div>
                     </div>
                 </div>
 
-                <script type="text/javascript">
+                <!-- <script type="text/javascript">
                     $(document).ready(function () {
                         $('.special-product-slider').slick({
                             speed: 500,
@@ -247,18 +212,20 @@
                                 }]
                         });
                     });
-                </script>
+                </script> -->
 
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">New Arrival</h2>
+                        <h2 class="category-title">Featured Product</h2>
                         <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
-                    <div class="daily_deal3">
-                        @include('component.carousel_slider')
+                    <div class="slider-wrapper product-grid">
+                        <div class="item-grid special-product-slider3 featured_item">
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -270,3 +237,215 @@
 </div>
 </div>
 @endsection
+@push('js')
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            url: "{{route('home')}}",
+            method: "GET",
+            success: function(res){
+                newArrival();
+                if(res.slider)
+                {
+                    $("div.home_slider_section").html(res.slider);
+                    $(".home-page-top-slider").slick({
+                        dots: true,
+                        arrows: false,
+                        infinite: true,
+                        speed: 500,
+                        fade: true,
+                        cssEase: 'linear'
+                    });
+                }
+
+                if(res.category)
+                {
+                    $("div.popular_category_section").html(res.category);
+                }
+            }
+        });
+
+        function newArrival()
+        {
+            $.ajax({
+                url: "{{route('product.new')}}",
+                method: "GET",
+                success: function(res){
+                    bestDeal();
+                    if(res.html)
+                    {
+                        $("div.new_arrival").html(res.html);
+                        $('.special-product-slider').slick({
+                            speed: 500,
+                            dots: false,
+                            autoplay: true,
+                            infinite: true,
+                            slidesToShow: 6,
+                            slidesToScroll: 6,
+                            autoplaySpeed: 2000,
+
+                            responsive: [
+                                {
+                                    breakpoint: 1200,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 5,
+                                    }
+                                },
+                                {
+                                    breakpoint: 1000,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 3,
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2
+                                    }
+                                },
+                                {
+                                    breakpoint: 360,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                }]
+                        });
+                    }
+                }
+            });
+        }
+
+        function bestDeal()
+        {
+            $.ajax({
+                url: "{{route('product.best')}}",
+                method: "GET",
+                success: function(res){
+                    featuredItem();
+                    if(res.html)
+                    {
+                        $("div.best_deal").html(res.html);
+                        $('.special-product-slider2').slick({
+                            speed: 500,
+                            dots: false,
+                            autoplay: true,
+                            infinite: true,
+                            slidesToShow: 6,
+                            slidesToScroll: 6,
+                            autoplaySpeed: 2000,
+
+                            responsive: [
+                                {
+                                    breakpoint: 1200,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 5,
+                                    }
+                                },
+                                {
+                                    breakpoint: 1000,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 3,
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2
+                                    }
+                                },
+                                {
+                                    breakpoint: 360,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                }]
+                        });
+                    }
+                }
+            });
+        }
+
+        function featuredItem()
+        {
+            $.ajax({
+                url: "{{route('product.featured')}}",
+                method: "GET",
+                success: function(res){
+                    if(res.html)
+                    {
+                        $("div.featured_item").html(res.html);
+                        $('.special-product-slider3').slick({
+                            speed: 500,
+                            dots: false,
+                            autoplay: true,
+                            infinite: true,
+                            slidesToShow: 6,
+                            slidesToScroll: 6,
+                            autoplaySpeed: 2000,
+
+                            responsive: [
+                                {
+                                    breakpoint: 1200,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 5,
+                                    }
+                                },
+                                {
+                                    breakpoint: 1000,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 3,
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2
+                                    }
+                                },
+                                {
+                                    breakpoint: 360,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                }]
+                        });
+                    }
+                }
+            });
+        }
+    });
+</script>
+@endpush

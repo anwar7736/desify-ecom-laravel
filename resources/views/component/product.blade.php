@@ -2,9 +2,11 @@
 <div class="item-box">
     <div class="product-item">
         <div class="picture">
+        @if(calculateDiscount($product) > 0)
         <div class="discount-info">
-            60% off
+            {{ calculateDiscount($product) }}% off
         </div>
+        @endif
         <a href="{{ route('product.show', $product['id']) }}" title="">
         <img alt="Picture of Electric Egg Beater Or Mixer" src="{{ $product['image_url'] }}" title="" />
         </a>
@@ -15,11 +17,19 @@
         </h2>
         <div class="add-info">
             <div class="prices">
+             @if($product['ecom_price'] > 0 && $product['ecom_price'] != $product['variation']['default_sell_price'])
                 <div class="register-prices">
-                    <span class="price actual-price">৳ {{ $product['variation']['default_sell_price'] }}</span>
+                    <span class="price actual-price">৳ {{ number_format($product['ecom_price'],0) }}</span>
                     <span class="price old-price">&#x9F3;
-                    {{ $product['variation']['default_sell_price'] }}</span>
+                    {{ number_format($product['variation']['default_sell_price'],0) }}</span>
                 </div>
+            @else
+            <div class="register-prices">
+                <span class="price actual-price">
+                    ৳ {{ number_format($product['variation']['default_sell_price'],0) }} 
+                </span>
+            </div>
+            @endif
                 <div class="rating-wrapper">
                     <div class="product-rating-box"
                     title="0 review(s)">

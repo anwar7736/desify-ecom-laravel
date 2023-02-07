@@ -13,7 +13,7 @@
                             <span class="delimiter">/</span>
                         </li>
                             <li>
-                                    <strong class="current-item">Catagories</strong>
+                                    <strong class="current-item">Shop</strong>
                             </li>
                     </ul>
                 </div>

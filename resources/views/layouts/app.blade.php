@@ -25,7 +25,7 @@
     <link href="{{ asset('assets/css/odometer-theme-default.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('lib/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
     <style>
         .minishoppingCartRemoveitemIcon {
         width: 15px;

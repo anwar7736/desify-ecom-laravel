@@ -135,20 +135,31 @@
                                 </div>
                                 <!--price -->
                                 <div class="prices" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                   @if($product['ecom_price'] > 0 && $product['ecom_price'] != $product['variation']['default_sell_price'])
                                     <div class="product-price">
-                                    <label>Price:</label>
-                                    <span  itemprop="price" content="600.00" class="price-value-2253" >
-                                    ৳ {{ number_format($product['variation']['default_sell_price'], 0) }}
-                                    </span>
+                                        <label>Price:</label>
+                                        <span  itemprop="price" content="600.00" class="price-value-2253" >
+                                        ৳ {{ number_format($product['ecom_price'], 0) }}
+                                        </span>
                                     </div>
                                     <div class="old-product-price">
-                                    <label>Old Price:</label>
-                                    <span>&#x9F3; {{ number_format($product['variation']['default_sell_price'], 0) }}</span>
+                                        <label>Old Price:</label>
+                                        <span>&#x9F3; {{ number_format($product['variation']['default_sell_price'], 0) }}</span>
                                     </div>
+                                    @else
+                                    <div class="product-price">
+                                        <label>Price:</label>
+                                        <span  itemprop="price" content="600.00" class="price-value-2253" >
+                                        ৳ {{ number_format($product['variation']['default_sell_price'], 0) }}
+                                        </span>
+                                    </div>
+                                    @endif
+                                    @if(calculateDiscount($product) > 0)
                                     <div class="discount-info" style="margin-top: 7px;">
-                                    <label>You Save:</label>
-                                    <span id="blink">52% off</span>
+                                        <label>You Save:</label>
+                                        <span id="blink">{{ calculateDiscount($product) }}% off</span>
                                     </div>
+                                    @endif
                                     <meta itemprop="priceCurrency" content="BDT" />
                                 </div>
                                 <script type="text/javascript">
@@ -188,6 +199,7 @@
                                     <div class="sku" >
                                         <span class="label">SKU:</span>
                                         <span class="value" itemprop="sku" id="sku-2253">{{ $product['sku'] }}</span>
+                                        <input type="hidden" name="category_id" value="{{ $product['category_id'] }}">
                                     </div>
                                     </div>
                                     
@@ -369,427 +381,17 @@
                 </div>
                 
                 <div class="section-white">
-                    
-                    <div id="related_products_grid" class="related-products-grid product-grid">
                         <div class="page_title_area">
                         <h2 class="page_title">
                             <span>Related Products</span>
                         </h2>
                         </div>
-                        <div class="item-grid">
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- <div class="item-grid" id="related_product_list">
                             
-                        </div>
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="item-box">
-                            <div class="product-item" data-productid="2149">
-                                <div class="picture">
-                                    <div class="discount-info">
-                                    50% off                
-                                    </div>
-                                    <a href="product.html" title="Talking and Dancing Cactus Plush Toys">
-                                    <img alt="Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable) &#x98F;&#x9B0; &#x99B;&#x9AC;&#x9BF;" src="https://www.deshify.com/images/thumbs/0014936_talking-and-dancing-cactus-plush-toys-home-office-decoration-show-pieces-120-songs-rechargeable_415.jpeg" title="Talking and Dancing Cactus Plush Toys" />
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <h2 class="product-title">
-                                    <a href="product.html">Talking and Dancing Cactus Plush Toys, Home &amp; Office  Decoration Show pieces (120 songs &amp; Rechargeable)</a>
-                                    </h2>
-                                    <div class="add-info">
-                                    <div class="prices">
-                                        <div class="register-prices">
-                                            <span class="price actual-price">&#x9F3; 850</span>
-                                            <span class="price old-price">&#x9F3; 1,700</span>
-                                        </div>
-                                        <div class="rating-wrapper">
-                                            <div class="product-rating-box" title="1 &#x9B0;&#x9BF;&#x9AD;&#x9BF;&#x989;(s)">
-                                                <div class="rating">
-                                                <div style="width: 100%">
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <span class="prime_icon">
-                                            <img src="https://www.deshify.com/Themes/nopTheme/Content/images/prime_logo.png" alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="buttons clearfix">
-                                        <div class="single_button add-to-cart-btn">
-                                            <div class="btn btn-default">
-                                                <div class="button_icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                </div>
-                                                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" />
-                                            </div>
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-heart"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="single_button">
-                                            <div class="button_icon">
-                                                <i class="fas fa-retweet"></i>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
+                        </div> -->
+                        <div class="slider-wrapper product-grid">
+                        <div class="item-grid special-product-slider related_product_list">
+
                         </div>
                     </div>
                 </div>
@@ -812,4 +414,71 @@
     <script src="{{ asset('assets/js/cloud-zoom.1.0.2.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/imageload.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/fullscreen.min.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function(){
+                                        
+           relatedProducts();
+
+           function relatedProducts(){
+            let category = $(document).find('input[name="category_id"]').val();
+            $.ajax({
+                url: "{{route('product.related')}}",
+                method: "GET",
+                data: {category},
+                success: function(res){
+                    if(res.html)
+                    {
+                        $("div.related_product_list").html(res.html);
+                        $('.special-product-slider').slick({
+                            speed: 500,
+                            dots: false,
+                            autoplay: true,
+                            infinite: true,
+                            slidesToShow: 6,
+                            slidesToScroll: 6,
+                            autoplaySpeed: 2000,
+
+                            responsive: [
+                                {
+                                    breakpoint: 1200,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 5,
+                                    }
+                                },
+                                {
+                                    breakpoint: 1000,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 3,
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2
+                                    }
+                                },
+                                {
+                                    breakpoint: 360,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                }]
+                        });
+                    }
+                }
+            });
+           }
+        });
+    </script>
 @endpush
