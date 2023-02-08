@@ -200,6 +200,8 @@
                                         <span class="label">SKU:</span>
                                         <span class="value" itemprop="sku" id="sku-2253">{{ $product['sku'] }}</span>
                                         <input type="hidden" name="category_id" value="{{ $product['category_id'] }}">
+                                        <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                                        <input type="hidden" name="type" value="{{ $product['type'] }}">
                                     </div>
                                     </div>
                                     
@@ -210,30 +212,26 @@
                                 </div>
                                 <!--sample download-->
                                 <!--attributes-->
+                                @if($product['type'] == 'variable')
+                                <strong>Choose Variation : <span class="text-danger">*</span></strong>
                                 <div class="attributes">
-                                    <dl>
-                                    <dt id="product_attribute_label_161">
+                                    <dl class="row">
+                                    @foreach( $product['variations'] as $v)
+                                    <dt id="product_attribute_label_162" class="col-md-3 col-sm-3">
                                         <label class="text-prompt">
-                                        Pink
+                                            <input class="variation" type="radio" name="v" value="{{ $v['id'] }}"> {{ $v['name']}}
                                         </label>
+                                        <span class="required hide">*</span>
                                     </dt>
-                                    <!-- <dd id="product_attribute_input_161">
-                                        <select name="product_attribute_161" id="product_attribute_161" >
-                                            <option value="0">---</option>
-                                        </select>
-                                    </dd> -->
-                                    <dt id="product_attribute_label_162">
-                                        <label class="text-prompt">
-                                        mediam
-                                        </label>
-                                        <span class="required">*</span>
-                                    </dt>
+                                    @endforeach
                                     <dd id="product_attribute_input_162">
                                         <ul class="option-list">
                                         </ul>
                                     </dd>
                                     </dl>
+                                    <p class="text-danger size-validation"></p>
                                 </div>
+                                @endif
                                 <!--gift card-->
                                 <!--rental info-->
                                 <!-- cart & wishlist, compare , email button -->
@@ -244,7 +242,7 @@
                                         <div class="quantity-panel">
                                             <label class="qty-label" for="addtocart_2253_EnteredQuantity">Quantity:</label>
                                             <div class="quantity-box">
-                                                <input class="qty-input" type="number" min="1" step="1" data-val="true" data-val-required="The Qty field is required." id="addtocart_2253_EnteredQuantity" name="addtocart_2253.EnteredQuantity" value="1" />
+                                                <input class="qty-input" type="number" min="1" max="10" step="1" data-val="true" data-val-required="The Qty field is required." id="addtocart_2253_EnteredQuantity" name="addtocart_2253.EnteredQuantity" value="1" />
                                             </div>
                                         </div>
                                         <div class="add-to-cart">
@@ -421,10 +419,11 @@
 
            function relatedProducts(){
             let category = $(document).find('input[name="category_id"]').val();
+            let id = $(document).find('input[name="product_id"]').val();
             $.ajax({
                 url: "{{route('product.related')}}",
                 method: "GET",
-                data: {category},
+                data: {category, id},
                 success: function(res){
                     if(res.html)
                     {
@@ -479,6 +478,7 @@
                 }
             });
            }
+
         });
     </script>
 @endpush

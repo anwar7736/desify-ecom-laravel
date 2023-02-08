@@ -8,13 +8,13 @@
                 <div class="page shopping-cart-page">
                 <div class="page-title shoppingCartTitle">
                     <h1>Shopping cart</h1>
-                    <button id="clearCart" name="clearCart" class="button-1 checkout-button btn btn-danger" onclick="AjaxCart.deleteproduct_allitemscart()">
+                    <button id="clearCart" name="clearCart" class="button-1 checkout-button btn btn-danger">
                     Clear all
                     </button>
                 </div>
                 <div class="page-body">
                     <div class="order-summary-content">
-                        <form method="post" enctype="multipart/form-data" id="shopping-cart-form" action="/cart" novalidate="novalidate">
+                        <form method="post" enctype="multipart/form-data" id="shopping-cart-form" action="/cart" novalidate="novalidate" onsubmit="return false">
                             <div class="table-wrapper">
                             <table class="cart">
                                 <colgroup>
@@ -52,43 +52,66 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php 
+                                        $sub_total = 0;
+                                    @endphp
+                                    @forelse($cart as $key=>$item)
+                                    @php 
+                                        $sub_total += calculate_row_total($item);
+                                    @endphp
                                     <tr>
                                         <td class="sku">
                                         <label class="td-title">SKU:</label>
-                                        <span class="sku-number"></span>
+                                            <span class="sku-number">{{ $item['sku'] }}</span>
                                         </td>
                                         <td class="product-picture">
-                                        <a href="product.html"><img alt="Picture of COLLAGEN PLUS VIT E CREAM" src="https://www.deshify.com/images/thumbs/0010231_collagen-plus-vit-e-cream_80.jpeg" title=""></a>
+                                        <a href="{{ route('product.show', $key) }}">
+                                            <img alt="" src="{{ $item['image'] }}" title="">
+                                        </a>
                                         </td>
                                         <td class="product">
-                                        <a href="/product.html" class="product-name">COLLAGEN PLUS VIT E CREAM</a>
+                                        <a href="{{ route('product.show', $key) }}" class="product-name">
+                                            {{ $item['name'] }}
+                                        </a>
                                         <div class="product-unit-price sm-device">
                                             ৳ 165 / Price Per Unit
                                         </div>
                                         </td>
                                         <td class="unit-price">
                                         <label class="td-title">Price:</label>
-                                        <span class="product-unit-price">৳ 165</span>
+                                        @if($item['regular_price'] > 0)
+                                        <span class="product-unit-price">
+                                            ৳ {{ number_format($item['regular_price'], 0)}}
+                                        </span>
+                                        @else
+                                        <span class="product-unit-price">
+                                            ৳ {{ number_format($item['default_price'], 0)}}
+                                        </span>
+                                        @endif
+                                       
                                         </td>
                                         <td class="quantity">
                                         <label class="td-title">Qty.:</label>
                                         <div class="qty-wrapper">
-                                            <a href="#">
+                                            <a href="#" class="hide">
                                             <i class="fa fa-plus"></i>
                                             </a>
-                                            <input id="itemquantity38385" name="itemquantity38385" type="number" value="2" class="qty-input">
-                                            <a>
+                                            <input id="itemquantity38385" name="itemquantity38385" type="number" value="{{ $item['quantity'] }}" class="qty-input">
+                                            <a class="hide">
                                             <i class="fa fa-minus"></i>
                                             </a>
                                         </div>
                                         </td>
                                         <td class="subtotal">
                                         <label class="td-title">Total:</label>
-                                        <span class="product-subtotal">৳ 330</span>
+                                        <span class="product-subtotal">৳ {{ calculate_row_total($item) }}</span>
                                         </td>
                                         <td class="remove-from-cart">
                                         <label class="td-title">Remove:</label>
+                                        <input type="hidden" name="item_id" value="{{ $key }}">
+                                        <input type="hidden" name="size" value="{{ $item['size'] }}">
                                         <button type="button" id="btnDeleteItem" value="38385" style="border:none; background:none"><i class="fa fa-trash-o delete" style="font-size:20px;"></i></button>
+                                        </form>
                                         <span style="display:none">
                                             <div class="checkator_holder checkbox" style="width: 0px; height: 0px; margin: 0px 0px 0px -20px; float: none; display: block;">
                                                 <input type="checkbox" name="removefromcart" value="38385" id="38385" class="checkator_source" style="opacity: 0; margin: 0px;">
@@ -97,13 +120,20 @@
                                         </span>
                                         </td>
                                     </tr>
+                                    @empty
+                                    <tr>
+                                        <td class="text-center" colspan="7">
+                                            <strong style="color:red !important">Your cart is empty!</strong>
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             </div>
                             <div class="cart-options">
                             <div class="common-buttons">
-                                <input type="submit" name="updatecart" value="Update shopping cart" id="update-cart-button" class="button-2 update-cart-button">
-                                <input type="submit" name="continueshopping" value="Continue shopping" class="button-2 continue-shopping-button">
+                                <input type="button" name="updatecart" value="Update shopping cart" id="update-cart-button" class="button-2 update-cart-button">
+                                <input type="button" name="continueshopping" value="Continue shopping" class="button-2 continue-shopping-button">
                             </div>
                             <div class="selected-checkout-attributes">
                             </div>
@@ -141,7 +171,7 @@
                                                 <label>Sub-Total:</label>
                                             </td>
                                             <td class="cart-total-right">
-                                                <span id="subtotal-value" class="value-summary">৳ 330</span>
+                                                <span id="subtotal-value" class="value-summary">৳ {{ $sub_total }}</span>
                                             </td>
                                         </tr>
                                         <tr class="shipping-cost" style="display: none;">
@@ -157,7 +187,7 @@
                                                 <label>Total:</label>
                                             </td>
                                             <td class="cart-total-right">
-                                                <span id="cart-total-onepage" class="cart-total-onepage-css value-summary"><strong>৳ 330</strong></span>
+                                                <span id="cart-total-onepage" class="cart-total-onepage-css value-summary"><strong>৳ {{ $sub_total }}</strong></span>
                                             </td>
                                         </tr>
                                         </tbody>

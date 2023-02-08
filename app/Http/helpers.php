@@ -14,6 +14,18 @@
       
     }
 
+    function calculate_row_total($item)
+    {
+        if($item['regular_price'] > 0)
+        {
+             return (int) $item['quantity'] * (int) $item['regular_price'];
+        }
+        else{
+            return (int) $item['quantity'] * (int) $item['default_price'];
+        }
+       
+    }
+
     function getTotalCart()
     {
        $total_item = count(session()->get('cart', []));

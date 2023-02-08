@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 
 
 Route::resource('cart', CartController::class);
+Route::get('/clear-all', [CartController::class, 'clearAll'])->name('clear.all');
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index')->name('home');

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
         rel="stylesheet">
     <link
@@ -24,6 +25,7 @@
     <link href="{{ asset('assets/css/grid.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/odometer-theme-default.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('lib/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
     <style>
@@ -57,7 +59,16 @@
     <script src="{{ asset('assets/js/odometer.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/slick.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/custome.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/cart.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/toastr.min.js') }}" type="text/javascript"></script>
     <a href="#" id="scroll" style="display: none;"><i class="fas fa-arrow-up"></i></a>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     @stack('js')
 
 </body>

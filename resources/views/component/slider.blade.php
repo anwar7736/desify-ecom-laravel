@@ -50,7 +50,7 @@
                 <div class="button_icon">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
-                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button"/> 
+                <input type="button" value="Order Now" class="button-2 product-box-add-to-cart-button" data-product="{{ $product['id'] }}"/> 
             </div>
         </div>
 

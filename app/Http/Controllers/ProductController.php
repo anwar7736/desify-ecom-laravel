@@ -39,19 +39,21 @@ class ProductController extends Controller
 
     public function shop()
     {   
-        $category = request()->get('category');   
-
         if(request()->ajax())
         {
             $products = [];
+            $category = request()->get('category');   
+            $query = request()->get('query');   
 
-            if(!is_null($category))
+            if(!empty($category))
             {
                 $response = Http::get(env('API_URL').'product-by-category?category='.$category);
                 $products = $response->json();
-
-                $view = view('component.product', compact('products'))->render();
-                return response()->json(['success'=>true, 'html'=>$view]);
+            }            
+            else if(!empty($query))
+            {
+                $response = Http::get(env('API_URL').'product-search?query='.$query);
+                $products = $response->json();
             }
             else{
                 $response = Http::get(env('API_URL').'shop-product-list');
@@ -68,7 +70,8 @@ class ProductController extends Controller
     public function relatedProducts()
     {
         $category = request()->get('category');
-        $response = Http::get(env('API_URL').'related-product-list?category='.$category);
+        $id = request()->get('id');
+        $response = Http::get(env('API_URL').'related-product-list?category='.$category.'&id='.$id);
         $products = $response->json();
         $view = view('component.slider', compact('products'))->render();
         return response()->json(['html'=>$view]);

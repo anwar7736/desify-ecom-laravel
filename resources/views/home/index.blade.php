@@ -10,33 +10,45 @@
     <span class="cart_icon">
     <i class="fas fa-shopping-cart"></i>
     </span>
-    <a href="/cart">1 item(s)</a>            </span>
+    <a href="{{ route('cart.index') }}"><span id="cart_item_total">{{ getTotalCart() }}</span> item(s)</a>            
+</span>
     <span>
     <a href="#" class="close">Close</a>
     </span>
     </div>
+    @php 
+        $sub_total = 0;
+    @endphp
     <div class="items">
-    <div class="item first">
-        <div class="minishoppingCartRemoveitemIcon">
-            <span class="removeMiniShoppingCartItem">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-            </span>
-        </div>
-        <div class="picture">
-            <a href="/collagen-plus-vit-e-cream" title="Show details for COLLAGEN PLUS VIT E CREAM">
-            <img alt="Picture of COLLAGEN PLUS VIT E CREAM" src="https://www.deshify.com/images/thumbs/0010231_collagen-plus-vit-e-cream_70.jpeg" title="Show details for COLLAGEN PLUS VIT E CREAM">
-            </a>
-        </div>
-        <div class="product">
-            <div class="name">
-                <a href="/collagen-plus-vit-e-cream">COLLAGEN PLUS VIT E CREAM</a>
+        @forelse(getCartItems() as $key=>$item)
+        @php 
+            $sub_total += calculate_row_total($item);
+        @endphp
+        <div class="item first cart-item">
+            <div class="minishoppingCartRemoveitemIcon">
+                <input type="hidden" name="item_id" value="{{ $key }}">
+                <span class="removeMiniShoppingCartItem" id="removeItem">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+                </span>
             </div>
-            <div class="price">Unit price: <span>৳ 165</span></div>
-            <div class="quantity">Quantity: <span>1</span></div>
+            <div class="picture">
+                <a href="{{ route('product.show', $key) }}" title="">
+                <img alt="" src="{{ $item['image'] }}" title="">
+                </a>
+            </div>
+            <div class="product">
+                <div class="name">
+                    <a href="{{ route('product.show', $key) }}">{{ $item['name'] }}</a>
+                </div>
+                <div class="price">Unit price: <span>৳ {{ $item['regular_price'] > 0 ? $item['regular_price'] : $item['default_price'] }}</span></div>
+                <div class="quantity">Quantity: <span>{{ $item['quantity'] }}</span></div>
+            </div>
         </div>
+        @empty
+        <strong class="text-danger">Your cart is now empty!</strong>
+        @endforelse
     </div>
-    </div>
-    <div class="totals">Sub-Total: <strong>৳ 165</strong></div>
+    <div class="totals">Sub-Total: <strong>৳ <span class="sub_total">{{ $sub_total }}</span></strong></div>
     <div class="buttons">
     <input type="button" style="width:250px;" value="Checkout" class="button-1 checkout-button">
     </div>

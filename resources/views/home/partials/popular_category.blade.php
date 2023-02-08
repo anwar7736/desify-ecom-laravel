@@ -6,7 +6,7 @@
 
     <div class="category_item_bottom_inner">
         <h2 class="title">
-            <a href="{{ route('shop', ['category'=> $category['name']]) }}" title="">
+            <a href="{{ route('shop', ['category'=> $category['id']]) }}" title="">
                     {{ $category['name'] }}
                 <img alt="" src="{{ $category['image_url'] }}" title="" />
                 </a>

@@ -3,83 +3,126 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-
+use App\Utils\Util;
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        //return session()->put('cart', []);
 
-        return view('cart.index');
+        $cart = session()->get('cart', []);
+        // dd($cart);
+        return view('cart.index', compact('cart'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('cart.checkout');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $id = $request->product;
+        $size = $request->variation;
+        $qty = $request->qty ?? 1;
+
+        $response = Http::get(env('API_URL').'product/'.$id);
+        $product = $response->json();
+        $variation = $product['variation'];
+        $variations = $product['variations'];
+
+        $cart = session()->get('cart', []);
+
+        $stock = Util::checkProductStock($id, $size);
+
+        if($stock < $qty){
+            return response()->json(['success'=>false,'msg'=>'Product '.$stock.' pcs available!']);
+        }
+  
+        if(isset($cart[$id])) 
+        {
+            $old_qty = $cart[$id]['quantity'];
+            $new_stock= $old_qty +  $qty;
+
+            // $stock=$this->util->checkProductStock($id, $size);
+
+            if($stock < $new_stock){
+                return response()->json(['success'=>false,'msg'=>'Product '.($stock - $old_qty).' pcs available!']);
+            }
+
+            $cart[$id]['quantity'] = $new_stock;
+            $cart[$id]['size'] = $size ?? '';
+        } 
+        
+        else {
+            $cart[$id] = [
+                "name" => $product['name'],
+                "sku" => $product['sku'],
+                "quantity" => $qty,
+                "type" => $product['type'],
+                "regular_price" => $product['ecom_price'],
+                "default_price"=> $variation['default_sell_price'],
+                "size" => $size,
+                "sizes" => $variations,
+                "image" => $product['image_url'],
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        $total_item = getTotalCart();
+        // $cart_items = getCartItems();
+        // $view = view('components.checkout_modal', compact('cart_items'))->render();
+        return response()->json(['success'=>true,'msg'=>'Product successfully added to cart', 'total'=>$total_item]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $qty = $request->qty;
+        $size = $request->size;
+        $cart = session()->get('cart', []);
+
+        $stock = $stock = Util::checkProductStock($id, $size);
+
+        if($stock < $qty)
+        {
+            return response()->json(['success'=>false,'msg'=>'Product '.$stock.' pcs available!']);
+        }
+        else{
+            $cart[$id]['quantity'] = $qty;
+            session()->put('cart', $cart);
+            return response()->json(['success'=>true,'msg'=>'Cart quantity updated successfully']);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $cart = session()->get('cart', []);
+        if(isset($cart[$id]))
+        {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+
+        $total = getTotalCart();
+        return response()->json(['success'=>true, 'msg'=>'Item remove from cart list', 'total'=>$total]);
+    }    
+    
+    public function clearAll()
+    {
+
+        $cart = session()->put('cart', []);
+        $total = 0;
+        return response()->json(['success'=>true, 'msg'=>'All item remove from cart', 'total'=>$total]);
     }
 }

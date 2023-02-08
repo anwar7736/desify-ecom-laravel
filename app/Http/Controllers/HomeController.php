@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-
+use Cache;
 class HomeController extends Controller
 {
     public function index()
     {
+            $response = Http::get(env('API_URL').'category-with-subcategory');
+            $category_list = $response->json();
+            Cache::put('categories', $category_list);
+
         if(request()->ajax())
         {
             $response = Http::get(env('API_URL').'home-slider');
