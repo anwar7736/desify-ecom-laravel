@@ -38,4 +38,18 @@
        return session()->get('cart', []);
     }
 
+    function auth_info()
+    {
+        return session()->get('auth', []);
+    }
+
+    function is_authenticate()
+    {
+        if(!empty(session()->get('auth')))
+        {
+            return true;
+        }
+        else return false;
+    }
+
 ?>

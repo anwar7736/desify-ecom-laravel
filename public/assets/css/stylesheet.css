@@ -5913,7 +5913,7 @@ a.src-zoom-anchor {
 
     .shopping-cart-page .cart td {
         display: flex;
-        border: none;
+        border: 1px solid rgba(0, 0, 0, 0.329);
         padding: 5px 5px;
         -webkit-box-align: center;
         -ms-flex-align: center;
@@ -5958,6 +5958,8 @@ a.src-zoom-anchor {
 
     .shopping-cart-page .cart td.product {
         flex-basis: calc(100% - 226px);
+        min-width: 150px;
+        max-width: 320px;
     }
 
     .shopping-cart-page .cart td.subtotal {

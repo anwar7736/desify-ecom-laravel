@@ -19,12 +19,18 @@
                     <div class="dropdown header_user_links header_dropwown_link">
                         <a class="dropdown-toggle" id="header_user_links" aria-haspopup="true"
                         aria-expanded="true">
-                        <span class="customer-name single-line">Hi, login</span>
+                        @if(is_authenticate())
+                            <span class="customer-name single-line">Hi, {{ auth_info()['first_name'] ?? ''}}</span>
+                        @endif
                         <span>My account</span>
                         <i class="fas fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="header_user_links">
-                        <li><a href="login.html" class="ico-register">Log in</a></li>
+                        @if(is_authenticate())
+                            <li><a href="{{route('logout')}}" class="ico-register">Logout</a></li>
+                        @else
+                            <li><a href="{{route('login')}}" class="ico-register">Login</a></li>
+                        @endif
                         </ul>
                     </div>
                     <div class="shopping_cart_area">
@@ -34,7 +40,7 @@
                             <span class="cart_icon">
                             <i class="fas fa-shopping-cart"></i>
                             </span>
-                            <span class="cart-qty">{{ getTotalCart() }} Items</span>
+                            <span class="cart-qty"><span class="cart_total_item">{{ getTotalCart() }}</span> Items</span> 
                             </a>
                         </div>
                         </div>
@@ -67,12 +73,17 @@
                         <div class="dropdown header_user_links header_dropwown_link">
                         <a class="dropdown-toggle" id="header_user_links" aria-haspopup="true"
                             aria-expanded="true">
-                        <span class="customer-name single-line">Hi, login</span>
+                        <span class="customer-name single-line">Hi, {{ auth_info()['first_name'] ?? ''}}</span>
                         <span>My account</span>
                         <i class="fas fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="header_user_links">
-                            <li><a href="login.html" class="ico-register">Log in</a></li>
+                            @if(is_authenticate())
+                                <li><a href="{{ route('logout') }}" class="ico-register">Logout</a></li>
+                            @else
+                                <li><a href="{{ route('login') }}" class="ico-register">Login</a></li>
+                            @endif
+                            
                         </ul>
                         </div>
                         <div class="shopping_cart_area">
@@ -82,7 +93,7 @@
                                 <span class="cart_icon">
                                 <i class="fas fa-shopping-cart"></i>
                                 </span>
-                                <span class="cart-qty">0 Items</span>
+                                <span class="cart-qty"><span class="cart_total_item">{{ getTotalCart() }}</span> Items</span> 
                                 </a>
                             </div>
                         </div>

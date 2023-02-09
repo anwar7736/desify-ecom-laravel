@@ -18,9 +18,9 @@ $(function(){
                     {
                         if(type != "")
                         {   
-                            // location.href = "/cart";
+                            location.href = "/cart";
                         }   
-                        $(document).find('span.cart-qty').text(`${res.total} Items`);
+                        $(document).find('span.cart_total_item').text(`${res.total}`);
                         $(document).find('span#cart_item_total').text(`${res.total}`);
                         toastr.success(res.msg);
                     }
@@ -42,13 +42,14 @@ $(function(){
                 {
                     if(res.total)
                     {
-                        $(document).find('span.cart-qty').text(`${res.total} Items`);
+                        $(document).find('span.cart_total_item').text(`${res.total}`);
                         $(document).find('span#cart_item_total').text(`${res.total}`);
                         
                     }
                     else {
-                        $(document).find('span.cart-qty').text(`0 Items`);
+                        $(document).find('span.cart_total_item').text(`0`);
                         $(document).find('span#cart_item_total').text(`0`);
+                        location.reload();
                     }
 
                     record.remove();
@@ -80,12 +81,12 @@ $(function(){
                 {
                     if(res.total)
                     {
-                        $(document).find('span.cart-qty').text(`${res.total} Items`);
+                        $(document).find('span.cart_total_item').text(`${res.total}`);
                         $(document).find('span#cart_item_total').text(`${res.total}`);
                         
                     }
                     else {
-                        $(document).find('span.cart-qty').text(`0 Items`);
+                        $(document).find('span.cart_total_item').text(`0`);
                         $(document).find('span#cart_item_total').text(`0`);
                     }
                     $('table.cart').load(location.href+' table.cart');
@@ -178,7 +179,7 @@ $(function(){
     $(document).on('blur', 'input.qty-input', function(){
         let qty = $(this).val();
         let item = $(this).closest('tr').find('input[name="item_id"]').val();
-        let size = $(this).closest('tr').find('input[name="size"]').val();
+        let size = $(this).closest('tr').find('input[name="v"]').val();
         update_qty(item, qty, size);
     });
     
@@ -189,6 +190,49 @@ $(function(){
             remove_all();
         }
         
+    });
+
+    $(document).on('change', 'input.variation', function(){
+        let product = $(this).closest('tr').find('input[name="item_id"]').val();
+        let size = $(this).val();
+        $.ajax({
+            url: "/update-size",
+            data:{product, size},
+            method: "GET",
+            success: function(res)
+            {
+                if(res.success)
+                {
+                    $('td.variation_section_'+product).find('span.size-validation').addClass('hide');
+                    $('td.variation_section_'+product).find('span.stock-alert').removeClass('hide').text(`Stock ${res.stock} pcs available!`);
+                    toastr.success(res.msg);
+                }
+                else{
+                    toastr.error(res.msg);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', 'input.go-to-checkout', function(){
+        let total_item = Number(document.querySelector('span.cart_total_item').innerText);
+        if(total_item <= 0)
+        {
+            toastr.error('Your cart is now empty!');
+        }
+        else {
+            location.href = "/checkout";
+        }
+    });
+
+    $(document).on('change', 'input.shippingMethod', function(){
+        let charge = Number($(this).val());
+        let subtotal = Number($(document).find('input[name="sub_total"]').val());
+        let final_total = subtotal + charge;
+        $(document).find('span.delivery-charge').text(charge);
+        $(document).find('input[name="delivery_charge"]').val(charge);        
+        $(document).find('span.final_total').text(final_total);
+        $(document).find('input[name="final_total"]').val(final_total);
     });
 
     

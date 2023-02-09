@@ -10,11 +10,11 @@
             </div>
             <div class="page-body checkout-data">
                 <div class="opc" id="checkout-steps">
-                    <div class="step-title">
+                    <div class="step-title hide">
                         <h2 class="title">Billing address</h2>
                     </div>
-                    <div class="step a-item">
-                        <form action="">
+                    {{--<div class="step a-item">
+                     
                         <div id="checkout-billing-load">
                             <div class="checkout-data">
                                 <div class="section new-billing-address">
@@ -53,52 +53,74 @@
                                 </div>
                             </div>
                         </div>
-                        </form>
-                    </div>
+                       
+                    </div>--}}
                     <div class="step-title">
                         <h2 class="title">Shipping address</h2>
                     </div>
                     <div class="step a-item">
-                        <form action="">
+                        <form action="{{ route('checkout') }}" method="POST" id="checkoutForm">
+                            @csrf
                         <div id="checkout-billing-load">
                             <div class="checkout-data">
                                 <div class="section new-billing-address">
                                     <div class="enter-address">
                                     <div class="edit-address">
                                         <div class="inputs">
-                                            <label for="fullName">Full Name</label>
-                                            <input type="text" id="fullName" >
+                                            <label for="fullName">Name</label>
+                                            <input type="text" id="fullName" name="name" required>
                                             <span class="required">
                                             *
                                             </span>
                                         </div>
                                         <div class="inputs">
                                             <label for="phone">Phone Number</label>
-                                            <input type="text" id="phone" >
+                                            <input type="number" id="phone" name="phone" required>
                                             <span class="required">
                                             *
                                             </span>
                                         </div>
                                         <div class="inputs">
                                             <label for="Address">Address</label>
-                                            <input type="text" id="Address" >
+                                            <input type="text" id="Address" name="address" required>
                                             <span class="required">
                                             *
                                             </span>
                                         </div>
                                         <div class="inputs">
                                             <label for="City">City</label>
-                                            <input type="text" id="City" >
-                                            <span class="required">
-                                            *
-                                            </span>
+                                            <select name="city" id="">
+                                            <option value="Dhaka" selected>
+                                                    Dhaka
+                                                </option>                                                
+                                                <option value="Khulna">
+                                                    Khulna
+                                                </option>                                                
+                                                <option value="Rajshahi">
+                                                    Rajshahi
+                                                </option>                                                
+                                                <option value="Rangpur">
+                                                    Rangpur
+                                                </option>
+                                                <option value="Mymensingh">
+                                                    Mymensingh
+                                                </option>                                                
+                                                <option value="Sylhet">
+                                                    Sylhet
+                                                </option>                                                
+                                                <option value="Chittagong">
+                                                    Chittagong
+                                                </option>                                                
+                                                <option value="Barishal">
+                                                    Barishal
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </form>
                     </div>
                 </div>
                 <div id="opc-shipping_method">
@@ -106,7 +128,6 @@
                         <h2 class="title">Shipping method</h2>
                     </div>
                     <div id="checkout-step-shipping-method" class="step a-item">
-                        <form action="">
                         <div id="checkout-shipping-method-load">
                             <div class="checkout-data">
                                 <div class="section shipping-method">
@@ -114,7 +135,7 @@
                                     <li>
                                         <div class="method-name">
                                             <div class="checkator_holder radio" style="width: 13px; height: 13px; margin: 0px 0px 0px -20px; float: none; display: block;">
-                                                <input id="shippingoption_1" type="radio" class="shippingMethod checkator_source" name="shippingoption"  style="opacity: 0; margin: 0px;">
+                                                <input id="shippingoption_1"  value="60" type="radio" checked class="shippingMethod checkator_source" name="shippingoption"  style="opacity: 0; margin: 0px;">
                                                 <div id="checkator_shippingoption_1" class="checkator_element radio">
                                                 </div>
                                             </div>
@@ -127,7 +148,7 @@
                                     <li>
                                         <div class="method-name">
                                             <div class="checkator_holder radio" style="width: 13px; height: 13px; margin: 0px 0px 0px -20px; float: none; display: block;">
-                                                <input id="shippingoption_2" type="radio" class="shippingMethod checkator_source" name="shippingoption" style="opacity: 0; margin: 0px;">
+                                                <input id="shippingoption_2" type="radio" class="shippingMethod checkator_source" value="120" name="shippingoption" style="opacity: 0; margin: 0px;">
                                                 <div id="checkator_shippingoption_2" class="checkator_element radio">
                                                 </div>
                                             </div>
@@ -141,15 +162,15 @@
                                 </div>
                             </div>
                         </div>
-                        </form>
+                        
                     </div>
                 </div>
-                <div id="opc-payment_method" class="">
+                <div id="opc-payment_method" class="hide">
                     <div class="step-title">
                         <h2 class="title">Payment method</h2>
                     </div>
                     <div id="checkout-step-payment-method" class="step a-item">
-                        <form action="" id="co-payment-method-form" novalidate="novalidate">
+                        
                         <div id="checkout-payment-method-load">
                             <div class="checkout-data">
                                 <div class="section payment-method">
@@ -163,7 +184,7 @@
                                             </div>
                                             <div class="payment-details">
                                                 <div class="checkator_holder radio" style="width: 13px; height: 13px; margin: 0px 0px 0px -20px; float: none; display: block;">
-                                                <input id="paymentmethod_0" type="radio" name="paymentmethod" value="Payments.CashOnDelivery" class="paymentmethodrdo checkator_source" onchange="PaymentMethod.paymentChecker()" style="opacity: 0; margin: 0px;">
+                                                <input id="paymentmethod_0" checked type="radio" name="method" value="cash" class="paymentmethodrdo checkator_source" style="opacity: 0; margin: 0px;">
                                                 <div id="checkator_paymentmethod_0" class="checkator_element radio"></div>
                                                 </div>
                                                 <label for="paymentmethod_0">Cash On Delivery (COD)</label>
@@ -180,7 +201,7 @@
                                             </div>
                                             <div class="payment-details">
                                                 <div class="checkator_holder radio" style="width: 13px; height: 13px; margin: 0px 0px 0px -20px; float: none; display: block;">
-                                                <input id="paymentmethod_1" type="radio" name="paymentmethod" value="Payments.SSLCommerz" class="paymentmethodrdo checkator_source" onchange="PaymentMethod.paymentChecker()" style="opacity: 0; margin: 0px;">
+                                                <input id="paymentmethod_1" type="radio" name="method" value="sslwireless" class="paymentmethodrdo checkator_source" style="opacity: 0; margin: 0px;">
                                                 <div id="checkator_paymentmethod_1" class="checkator_element radio"></div>
                                                 </div>
                                                 <label for="paymentmethod_1">SSLWireless / SSLCommerz</label>
@@ -192,7 +213,7 @@
                                 </div>
                             </div>
                         </div>
-                        </form>
+               
                     </div>
                 </div>
                 <div id="ocp-confirm_order">
@@ -220,6 +241,14 @@
                             }
                             }
                         </style>
+                        @php 
+                            $sub_total = 0;
+                            foreach($cart as $key=>$item)
+                            {
+                                $sub_total += calculate_row_total($item);
+                            }
+                        
+                        @endphp
                         <div class="total-info total-info-root">
                             <table class="cart-total">
                                 <tbody>
@@ -228,7 +257,10 @@
                                         <label>Sub-Total:</label>
                                     </td>
                                     <td class="cart-total-right">
-                                        <span id="subtotal-value" class="value-summary">৳ 165</span>
+                                        <span id="subtotal-value" class="value-summary">৳ 
+                                            <span class="sub_total">{{ $sub_total }}</span>  
+                                        <input type="hidden" name="sub_total" value="{{ $sub_total }}">
+                                    </span>
                                     </td>
                                     </tr>
                                     <tr class="shipping-cost">
@@ -236,7 +268,9 @@
                                         <label>Shipping:</label>
                                     </td>
                                     <td class="cart-total-right">
-                                        <span id="shipping-value" class="value-summary wow">৳ 0</span>
+                                        <span id="shipping-value" class="value-summary wow">৳ <span class="delivery-charge">60</span> 
+                                        <input type="hidden" name="delivery_charge" value="60">
+                                    </span>
                                     </td>
                                     </tr>
                                     <tr class="order-total">
@@ -244,7 +278,11 @@
                                         <label>Total:</label>
                                     </td>
                                     <td class="cart-total-right">
-                                        <span id="cart-total-onepage" class="cart-total-onepage-css value-summary"><strong>৳ 165</strong></span>
+                                        <span id="cart-total-onepage" class="cart-total-onepage-css 
+                                        value-summary">
+                                        <strong>৳ <span class="final_total">{{ $sub_total + 60}}</span></strong>
+                                        <input type="hidden" name="final_total" value="{{ $sub_total + 60 }}">
+                                    </span>
                                     </td>
                                     </tr>
                                 </tbody>
@@ -254,9 +292,10 @@
                     </div>
                 </div>
                 <div class="buttons" id="confirm-order-buttons-container">
-                    <input type="button" id="confirm-orderBS" class="button-1 confirm-order-next-step-button" value="Confirm">
+                    <input type="submit" id="confirm-orderBS" class="button-1 confirm-order-next-step-button" value="Confirm">
                     <span class="please-wait" id="confirm-order-please-wait" style="display: none;">Submitting order information...</span>
                 </div>
+            </form>
             </div>
             </div>
         </div>

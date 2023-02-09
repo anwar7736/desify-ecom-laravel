@@ -15,9 +15,11 @@ class CartController extends Controller
         return view('cart.index', compact('cart'));
     }
 
-    public function create()
+    public function viewCheckout()
     {
-        return view('cart.checkout');
+        $cart = session()->get('cart', []);
+        
+        return view('cart.checkout', compact('cart'));
     }
 
     public function store(Request $request)
@@ -86,6 +88,23 @@ class CartController extends Controller
         //
     }
 
+    public function updateItemSize()
+    {
+        $id = request()->product;
+        $size = request()->size;
+        $cart = session()->get('cart', []);
+        $stock =  Util::checkProductStock($id, $size);
+        if(isset($cart[$id]))
+        {
+            $cart[$id]['size'] = $size;
+            session()->put('cart', $cart);
+            return response()->json(['success' => true, 'msg'=> 'Product size updated', 'stock'=>$stock]);
+        }
+        else{
+            return response()->json(['success' => false, 'msg'=> 'Something went wrong!']);
+        }
+    }
+
     public function update(Request $request, $id)
     {
         $qty = $request->qty;
@@ -124,5 +143,34 @@ class CartController extends Controller
         $cart = session()->put('cart', []);
         $total = 0;
         return response()->json(['success'=>true, 'msg'=>'All item remove from cart', 'total'=>$total]);
+    }
+
+    public function checkout(Request $request)
+    {
+        $cart = session()->get('cart', []);
+
+        $data = [];
+        $data['id'] = auth_info()['id'];
+        $data['name'] = $request->name;
+        $data['phone'] = $request->phone;
+        $data['address'] = $request->address;
+        $data['city'] = $request->city;
+        $data['charge'] = $request->delivery_charge;
+        $data['sub_total'] = $request->sub_total;
+        $data['final_total'] = $request->final_total;
+        
+        $response = Http::post(env('API_URL').'checkout', [
+            'customer'=> $data,
+            'items'=>$cart
+        ]);
+        $data = $response->json();
+        if($data['success'])
+        {
+            session()->put('cart', []);
+            return redirect()->route('home');
+        }
+        else{
+            return redirect()->back()->with(['msg'=>'Something went wrong!']);
+        }
     }
 }

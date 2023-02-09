@@ -32,4 +32,5 @@ class HomeController extends Controller
         $html = view('home.partials.popular_category', compact('categories'))->render();
         return response()->json(['html'=>$html]);
     }
+   
 }

@@ -8,8 +8,25 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 
 
+Route::controller(AuthController::class)->group(function(){
+    Route::group(['middleware'=>'guest_session'], function(){
+        Route::get('login',  'viewLogin')->name('login');
+        Route::post('login',  'login')->name('user.login');
+        Route::get('register','viewRegister')->name('register');
+        Route::post('register','register')->name('user.register');
+    });
+    
+    Route::get('logout','logout')->name('logout');
+});
+
 Route::resource('cart', CartController::class);
-Route::get('/clear-all', [CartController::class, 'clearAll'])->name('clear.all');
+Route::controller(CartController::class)->group(function(){
+    Route::get('/update-size', 'updateItemSize')->name('update.size');
+    Route::get('/clear-all', 'clearAll')->name('clear.all');
+    Route::get('/checkout', 'viewCheckout')->middleware('auth_session');
+    Route::post('checkout', 'checkout')->name('checkout')->middleware('auth_session');
+});
+
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index')->name('home');
