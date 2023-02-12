@@ -35,6 +35,7 @@ class AuthController extends Controller
         ]);
 
         $data = $response->json();
+        dd($data);
         if($data['success'])
         {
             session()->put('auth', $data['data']);

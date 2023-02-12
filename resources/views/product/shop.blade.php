@@ -78,11 +78,11 @@
                 <div class="product-selectors">
                     <div class="product-sorting">
                     <select id="products-orderby" name="products-orderby">
-                        <option selected="selected" value="">Position</option>
-                        <option value="">Name: A To Z</option>
-                        <option value="">Name: Z To A</option>
-                        <option value="">Price: Low To High</option>
-                        <option value="">Created On</option>
+                        <option value="a-z">Name: A To Z</option>
+                        <option value="z-a">Name: Z To A</option>
+                        <option value="created">Created On</option>
+                        <option value="l-h">Price: Low To High</option>
+                        <option value="h-l">Price: High To Low</option>
                     </select>
                     </div>
                     <div class="product-viewmode">
@@ -90,10 +90,11 @@
                     </div>
                     <div class="product-page-size">
                     <span>Display</span>
-                    <select id="products-pagesize" name="products-pagesize" onchange="setLocation(this.value);">
-                        <option value="#">80</option>
-                        <option value="#">100</option>
-                        <option selected="selected" value="#">120</option>
+                    <select id="products-pagesize" name="products-pagesize">
+                        <option value="25" selected="selected">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
                     </select>
                     </div>
                 </div>
@@ -110,18 +111,19 @@
                                     
                                         $("#slider-range").slider({
                                             range: true,
-                                            min: 450,
-                                            max: 2800,
-                                            values: [450, 2800],
+                                            min: 0,
+                                            max: 70000,
+                                            values: [0, 70000],
                                     
                                             slide: function (event, ui) {
                                                 var currentMin = ui.values[0];
                                                 var currentMax = ui.values[1];
                                                 $("#price-current-min").val(currentMin);
                                                 $("#price-current-max").val(currentMax);
+                                            
                                             },
                                             create: function( event, ui ) {
-                                                if ( (450 == 450 && 2800 == 2800) )
+                                                if ( (0 == 0 && 70000 == 70000) )
                                                 {
                                                     $(".filter-section .ajaxfilter-clear-price").hide();
                                                 }
@@ -130,7 +132,7 @@
                                                 var currentMin = ui.values[0];
                                                 var currentMax = ui.values[1];
                                     
-                                                if (450 == currentMin && 2800 == currentMax)
+                                                if (0 == currentMin && 70000 == currentMax)
                                                 {
                                                     $(".filter-section .ajaxfilter-clear-price").hide();
                                                 }
@@ -140,16 +142,17 @@
                                                 AjaxFilter.setFilter('p');
                                             }
                                         });
-                                        $("#price-current-min").val(450);
-                                        $("#price-current-max").val(2800);
+                                        
+                                        $("#price-current-min").val(0);
+                                        $("#price-current-max").val(70000);
                                     
                                     
                                         $('.ajaxfilter-clear-price').click(function (e) {
-                                            $("#price-current-min").val(450);
-                                            $("#price-current-max").val(2800);
+                                            $("#price-current-min").val(0);
+                                            $("#price-current-max").val(70000);
                                     
-                                            $("#slider-range").slider("values", 0,450);
-                                            $("#slider-range").slider("values", 1,2800);
+                                            $("#slider-range").slider("values", 0,0);
+                                            $("#slider-range").slider("values", 1,70000);
                                             AjaxFilter.setFilter('p');
                                         });
                                     
@@ -176,14 +179,14 @@
                                             </div>
                                         </div>
                                         <div id="slider-range">
-                                            <input type="hidden" value="450" id="min-price" />
-                                            <input type="hidden" value="2800" id="max-price" />
+                                            <input type="hidden" value="0" id="min-price" />
+                                            <input type="hidden" value="70000" id="max-price" />
                                         </div>
                                         <div class="ajaxfilter-price-section">
                                             <div class="ajaxfilter-price-section">
-                                            <input type="text" value="450"
+                                            <input type="text" value="0"
                                                 readonly id="price-current-min" name="" />
-                                            <input type="text" value="2800"
+                                            <input type="text" value="70000"
                                                 readonly id="price-current-max" name="" />
                                             </div>
                                         </div>
@@ -200,13 +203,16 @@
                                         </div>
                                         <div class="ajaxfilter-section">
                                             <ul>
-                                            <li>
+                                            <li class="hide">
                                                 <input type="checkbox" name="" value="821" />
                                             </li>
+                                            @foreach($brands as $brand)
                                             <li>
-                                                <input type="checkbox" name="" value="823"/>
-                                                <label for="">SKMEI</label>
+                                                <label>
+                                                    <input type="checkbox" name="brand[]" class="brand" value="{{ $brand['id'] }}"/> {{ $brand['name'] }}
+                                                </label>
                                             </li>
+                                            @endforeach
                                             </ul>
                                         </div>
                                     </div>
@@ -237,16 +243,43 @@
 @push('js')
 <script>
 $(document).ready(function(){
-getProducts();
+    getProducts();
+    
+$(document).on('change', '.brand', function(){
+    getProducts();
+});
+
+$(document).on('change', '#products-orderby', function(){
+    getProducts();
+});
+
+$(document).on('change', '#products-pagesize', function(){
+    getProducts();
+});
+
+
+
+
+
+
 function getProducts()
 {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
     const query = urlParams.get('query');
+    const brands = [];
+    $("input.brand:checked").each(function(){
+        brands.push($(this).val());
+    });
+    const priceMin = $("input#price-current-min").val();
+    const priceMax = $("input#price-current-max").val();
+    let paginate = $("#products-pagesize").val();
+    let orderBy = $("#products-orderby").val();
+
     $.ajax({
         url : "{{route('shop')}}",
         method: "GET",
-        data: {category, query},
+        data: {category, query, priceMin, priceMax, paginate, orderBy, brands},
         dataType: "JSON",
         success: function(res)
         {
