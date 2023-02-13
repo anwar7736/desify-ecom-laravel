@@ -27,6 +27,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="header_user_links">
                         @if(is_authenticate())
+                            <li><a href="{{ route('profile.index') }}" class="ico-register">My Profile</a></li>
+                            <li><a href="{{ route('password.change') }}" class="ico-register">Change Password</a></li>
                             <li><a href="{{route('logout')}}" class="ico-register">Logout</a></li>
                         @else
                             <li><a href="{{route('login')}}" class="ico-register">Login</a></li>
@@ -79,6 +81,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="header_user_links">
                             @if(is_authenticate())
+                                <li><a href="{{ route('profile.index') }}" class="ico-register">My Profile</a></li>
+                                <li><a href="{{ route('password.change') }}" class="ico-register">Change Password</a></li>
                                 <li><a href="{{ route('logout') }}" class="ico-register">Logout</a></li>
                             @else
                                 <li><a href="{{ route('login') }}" class="ico-register">Login</a></li>

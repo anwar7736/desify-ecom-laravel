@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::controller(AuthController::class)->group(function(){
@@ -16,10 +18,19 @@ Route::controller(AuthController::class)->group(function(){
         Route::post('register','register')->name('user.register');
     });
     
+    Route::get('/change-password', 'changePassword')->name('password.change')->middleware('auth_session');
+    Route::post('update-password', 'updatePassword')->name('password.update')->middleware('auth_session');
     Route::get('logout','logout')->name('logout');
 });
 
+
+Route::group(['middleware'=>'auth_session'], function(){
+    Route::resource('profile', ProfileController::class);
+    Route::resource('order', OrderController::class);
+});
+
 Route::resource('cart', CartController::class);
+
 Route::controller(CartController::class)->group(function(){
     Route::get('/update-size', 'updateItemSize')->name('update.size');
     Route::get('/clear-all', 'clearAll')->name('clear.all');
@@ -43,7 +54,4 @@ Route::controller(ProductController::class)->group(function(){
     Route::get('/related-products', 'relatedProducts')->name('product.related');
 });
 
-Route::controller(AuthController::class)->group(function(){
-
-});
 

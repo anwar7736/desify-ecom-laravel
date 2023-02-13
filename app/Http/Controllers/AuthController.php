@@ -35,7 +35,6 @@ class AuthController extends Controller
         ]);
 
         $data = $response->json();
-        dd($data);
         if($data['success'])
         {
             session()->put('auth', $data['data']);
@@ -61,4 +60,32 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+    
+    function changePassword()
+    {
+        return view('auth.password');
+    }
+
+    function updatePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'old_pass' => ['required'],
+            'new_pass' => ['required', 'min:4'],
+            'user' => ['required'],
+        ]);
+
+        $response = Http::post(env('API_URL').'update-password', [
+            $validated,
+        ]);
+
+        $data = $response->json();
+        if($data['success']){
+            session()->put('auth', []);
+            return response()->json(['success'=>true, 'msg'=>$data['msg']]);
+        }
+        else{
+            return response()->json(['success'=>false, 'msg'=>$data['msg']]);
+        }
+    }
+    
 }

@@ -53,27 +53,27 @@ class ProductController extends Controller
             $orderBy = request()->get('orderBy');   
             $brands = request()->get('brands');   
 
-            if(!empty($category))
-            {
-                $response = Http::get(env('API_URL').'product-by-category?category='.$category);
-                $products = $response->json();
-            }            
-            else if(!empty($query))
-            {
-                $response = Http::get(env('API_URL').'product-search?query='.$query);
-                $products = $response->json();
-            }
-            else{
+            // if(!empty($category))
+            // {
+            //     $response = Http::get(env('API_URL').'product-by-category?category='.$category);
+            //     $products = $response->json();
+            // }            
+            // if(!empty($query))
+            // {
+            //     $response = Http::get(env('API_URL').'product-search?query='.$query);
+            //     $products = $response->json();
+            // }
                 $response = Http::post(env('API_URL').'shop-product-list', [
                     'min' => $min,
                     'max' => $max,
                     'paginate' => $paginate,
                     'order' => $orderBy,
                     'brands' => $brands,
+                    'category' => $category,
+                    'query' => $query,
                 ]);
 
                 $products = $response->json();
-            }
 
             $view = view('component.product', compact('products'))->render();
             return response()->json(['success'=>true, 'html'=>$view]);
