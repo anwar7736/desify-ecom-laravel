@@ -148,14 +148,14 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">New Arrival</h2>
+                        <h2 class="category-title"></h2>
                         <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
                         
                     <div class="slider-wrapper product-grid">
-                        <div class="item-grid special-product-slider new_arrival">
+                        <div class="item-grid special-product-slider category_one">
 
                         </div>
                     </div>
@@ -163,13 +163,13 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">Best Deal</h2>
+                        <h2 class="category-title2"></h2>
                         <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
                     <div class="slider-wrapper product-grid">
-                        <div class="item-grid special-product-slider2 best_deal">
+                        <div class="item-grid special-product-slider2 category_two">
 
                         </div>
                     </div>
@@ -229,13 +229,41 @@
                 <div class="home-page-product">
                     <!--Category Panel-->
                     <div class="slider-title">
-                        <h2 class="category-title">Featured Product</h2>
+                        <h2 class="category-title3"></h2>
                         <a href="{{ route('shop') }}" class="shop-more">
                             Shop More
                         </a>
                     </div>
                     <div class="slider-wrapper product-grid">
-                        <div class="item-grid special-product-slider3 featured_item">
+                        <div class="item-grid special-product-slider3 category_three">
+                            
+                        </div>
+                    </div>
+                </div>                
+                <div class="home-page-product">
+                    <!--Category Panel-->
+                    <div class="slider-title">
+                        <h2 class="category-title4"></h2>
+                        <a href="{{ route('shop') }}" class="shop-more">
+                            Shop More
+                        </a>
+                    </div>
+                    <div class="slider-wrapper product-grid">
+                        <div class="item-grid special-product-slider4 category_four">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="home-page-product">
+                    <!--Category Panel-->
+                    <div class="slider-title">
+                        <h2 class="category-title5"></h2>
+                        <a href="{{ route('shop') }}" class="shop-more">
+                            Shop More
+                        </a>
+                    </div>
+                    <div class="slider-wrapper product-grid">
+                        <div class="item-grid special-product-slider5 category_five">
                             
                         </div>
                     </div>
@@ -256,7 +284,7 @@
             url: "{{route('home')}}",
             method: "GET",
             success: function(res){
-                newArrival();
+                categoryProductOne();
                 if(res.slider)
                 {
                     $("div.home_slider_section").html(res.slider);
@@ -277,16 +305,18 @@
             }
         });
 
-        function newArrival()
+        function categoryProductOne()
         {
             $.ajax({
-                url: "{{route('product.new')}}",
+                url: "{{route('category.product')}}",
+                data: {visible:1},
                 method: "GET",
                 success: function(res){
-                    bestDeal();
+                    categoryProductTwo();
                     if(res.html)
                     {
-                        $("div.new_arrival").html(res.html);
+                        $("div.category_one").html(res.html);
+                        $(".category-title").html(res.title);
                         $('.special-product-slider').slick({
                             speed: 500,
                             dots: false,
@@ -338,16 +368,18 @@
             });
         }
 
-        function bestDeal()
+        function categoryProductTwo()
         {
             $.ajax({
-                url: "{{route('product.best')}}",
+                url: "{{route('category.product')}}",
+                data: {visible:2},
                 method: "GET",
                 success: function(res){
-                    featuredItem();
+                    categoryProductThree();
                     if(res.html)
                     {
-                        $("div.best_deal").html(res.html);
+                        $("div.category_two").html(res.html);
+                        $(".category-title2").html(res.title);
                         $('.special-product-slider2').slick({
                             speed: 500,
                             dots: false,
@@ -399,16 +431,143 @@
             });
         }
 
-        function featuredItem()
+        function categoryProductThree()
         {
             $.ajax({
-                url: "{{route('product.featured')}}",
+                url: "{{route('category.product')}}",
+                data: {visible:3},
+                method: "GET",
+                success: function(res){
+                    categoryProductFour();
+                    if(res.html)
+                    {
+                        $("div.category_three").html(res.html);
+                        $(".category-title3").html(res.title);
+                        $('.special-product-slider3').slick({
+                            speed: 500,
+                            dots: false,
+                            autoplay: true,
+                            infinite: true,
+                            slidesToShow: 6,
+                            slidesToScroll: 6,
+                            autoplaySpeed: 2000,
+
+                            responsive: [
+                                {
+                                    breakpoint: 1200,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 5,
+                                    }
+                                },
+                                {
+                                    breakpoint: 1000,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 3,
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2
+                                    }
+                                },
+                                {
+                                    breakpoint: 360,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                }]
+                        });
+                    }
+                }
+            });
+        }
+        function categoryProductFour()
+        {
+            $.ajax({
+                url: "{{route('category.product')}}",
+                data: {visible:4},
+                method: "GET",
+                success: function(res){
+                    categoryProductFive();
+                    if(res.html)
+                    {
+                        $("div.category_four").html(res.html);
+                        $(".category-title4").html(res.title);
+                        $('.special-product-slider4').slick({
+                            speed: 500,
+                            dots: false,
+                            autoplay: true,
+                            infinite: true,
+                            slidesToShow: 6,
+                            slidesToScroll: 6,
+                            autoplaySpeed: 2000,
+
+                            responsive: [
+                                {
+                                    breakpoint: 1200,
+                                    settings: {
+                                        slidesToShow: 5,
+                                        slidesToScroll: 5,
+                                    }
+                                },
+                                {
+                                    breakpoint: 1000,
+                                    settings: {
+                                        slidesToShow: 4,
+                                        slidesToScroll: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        slidesToScroll: 3,
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 2,
+                                        slidesToScroll: 2
+                                    }
+                                },
+                                {
+                                    breakpoint: 360,
+                                    settings: {
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1
+                                    }
+                                }]
+                        });
+                    }
+                }
+            });
+        }
+
+        function categoryProductFive()
+        {
+            $.ajax({
+                url: "{{route('category.product')}}",
+                data: {visible:5},
                 method: "GET",
                 success: function(res){
                     if(res.html)
                     {
-                        $("div.featured_item").html(res.html);
-                        $('.special-product-slider3').slick({
+                        $("div.category_five").html(res.html);
+                        $(".category-title5").html(res.title);
+                        $('.special-product-slider5').slick({
                             speed: 500,
                             dots: false,
                             autoplay: true,

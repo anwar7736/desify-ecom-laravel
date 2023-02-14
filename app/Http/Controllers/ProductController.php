@@ -6,29 +6,39 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function newArrival()
+    public function homeCategoryProduct()
     {
-        $response = Http::get(env('API_URL').'new-arrival');
-        $products = $response->json();
+        $visible = request()->get('visible');
+        $response = Http::get(env('API_URL').'home-category-product?visible='.$visible);
+        $data = $response->json();
+        $products = $data['products'];
         $view = view('component.slider', compact('products'))->render();
-        return response()->json(['html'=>$view]);
+        return response()->json(['html'=>$view, 'title'=>$data['category_name']]);
     }    
     
-    public function bestDeal()
-    {
-        $response = Http::get(env('API_URL').'best-deal');
-        $products = $response->json();
-        $view = view('component.slider', compact('products'))->render();
-        return response()->json(['html'=>$view]);
-    }    
+    // public function newArrival()
+    // {
+    //     $response = Http::get(env('API_URL').'new-arrival');
+    //     $products = $response->json();
+    //     $view = view('component.slider', compact('products'))->render();
+    //     return response()->json(['html'=>$view]);
+    // }    
     
-    public function featuredProduct()
-    {
-        $response = Http::get(env('API_URL').'featured-product');
-        $products = $response->json();
-        $view = view('component.slider', compact('products'))->render();
-        return response()->json(['html'=>$view]);
-    }
+    // public function bestDeal()
+    // {
+    //     $response = Http::get(env('API_URL').'best-deal');
+    //     $products = $response->json();
+    //     $view = view('component.slider', compact('products'))->render();
+    //     return response()->json(['html'=>$view]);
+    // }    
+    
+    // public function featuredProduct()
+    // {
+    //     $response = Http::get(env('API_URL').'featured-product');
+    //     $products = $response->json();
+    //     $view = view('component.slider', compact('products'))->render();
+    //     return response()->json(['html'=>$view]);
+    // }
 
     public function show($id)
     {

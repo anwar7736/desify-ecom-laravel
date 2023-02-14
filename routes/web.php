@@ -46,6 +46,9 @@ Route::controller(HomeController::class)->group(function(){
 
 Route::controller(ProductController::class)->group(function(){
 
+    
+    Route::get('/home-category-product', 'homeCategoryProduct')->name('category.product');
+
     Route::get('/new-arrival', 'newArrival')->name('product.new');
     Route::get('/best-deal', 'bestDeal')->name('product.best');
     Route::get('/featured-product', 'featuredProduct')->name('product.featured');
